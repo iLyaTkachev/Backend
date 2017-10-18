@@ -16,6 +16,7 @@ public class MyServlet extends HttpServlet {
             throws IOException {
         resp.setContentType("text/plain");
         resp.getWriter().println("Please use the form to POST to this url");
+
     }
 
     @Override
