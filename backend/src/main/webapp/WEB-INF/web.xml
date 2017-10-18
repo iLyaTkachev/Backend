@@ -2,7 +2,7 @@
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee">
     <servlet>
         <servlet-name>MyServlet</servlet-name>
-        <servlet-class>com.example.ilyat.myapplication.backend.MyServlet</servlet-class>
+        <servlet-class>com.example.ilyat.myapplication.backend.CalculatorServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>MyServlet</servlet-name>

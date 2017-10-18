@@ -6,17 +6,28 @@
 
 package com.example.ilyat.myapplication.backend;
 
+import com.google.gson.Gson;
+
 import java.io.IOException;
 
 import javax.servlet.http.*;
 
-public class MyServlet extends HttpServlet {
-    @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
-        resp.setContentType("text/plain");
-        resp.getWriter().println("Please use the form to POST to this url");
+public class CalculatorServlet extends HttpServlet {
 
+    @Override
+    public void doGet(HttpServletRequest pRequest, HttpServletResponse pResponse)
+            throws IOException {
+        pResponse.setContentType("application/json");
+
+        final Result result = new Result();
+        try {
+            final String input = pRequest.getParameter("input");
+            final float res = Calculator.calculate(input);
+            result.setResult(res);
+        } catch (final Exception e) {
+            result.setError(e.toString());
+        }
+        new Gson().toJson(result, pResponse.getWriter());
     }
 
     @Override
