@@ -1,4 +1,4 @@
-package com.example.ilyat.myapplication.backend;
+package com.example;
 
 import com.google.gson.annotations.SerializedName;
 

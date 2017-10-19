@@ -6,6 +6,7 @@
 
 package com.example.ilyat.myapplication.backend;
 
+import com.example.Result;
 import com.google.gson.Gson;
 
 import java.io.IOException;
