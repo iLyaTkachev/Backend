@@ -12,9 +12,9 @@ public class BackendCalculator {
 
     public String evaluate(final String value) {
         //final String url = new CalcApi(BuildConfig.BASE_CALC_URL).evaluate(value);
-        final String url = "http://localhost:8080/calc";
+        //final String url = "http://localhost:8080/calc";
         final MyResponseListener listener = new MyResponseListener();
-        new HttpClient().request(url, listener);
+        new HttpClient().request(value, listener);
         if (listener.getThrowable() != null) {
 
             throw new UnsupportedOperationException(listener.getThrowable());
