@@ -16,10 +16,14 @@ public class BackendCalculator {
         final MyResponseListener listener = new MyResponseListener();
         new HttpClient().request(value, listener);
         if (listener.getThrowable() != null) {
-
-            throw new UnsupportedOperationException(listener.getThrowable());
+            //throw new UnsupportedOperationException(listener.getThrowable());
+            return listener.getThrowable().getMessage();
+        } else if (listener.getResult().getError()!=null){
+            return String.valueOf(listener.getResult().getError());
         }
-        return String.valueOf(listener.getResult().getResult());
+        else{
+            return String.valueOf(listener.getResult().getResult());
+        }
     }
 
     private static class MyResponseListener implements HttpClient.ResponseListener {
