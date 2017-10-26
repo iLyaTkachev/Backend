@@ -1,5 +1,7 @@
 package ilyatkachev.github.com.backend;
 
+import android.util.Log;
+
 import com.example.Result;
 import org.junit.Before;
 import org.junit.Test;
