@@ -1,6 +1,6 @@
 package ilyatkachev.github.com.backend;
 
-import com.example.Result;
+import com.example.Version;
 import com.google.gson.GsonBuilder;
 
 import java.io.InputStream;
@@ -8,23 +8,21 @@ import java.io.InputStreamReader;
 
 import ilyatkachev.github.com.backend.http.HttpClient;
 
-public class BackendCalculator {
+public class BackendVersion {
 
-    public String evaluate(final String value) {
+    public Version getLastVersion(final String value) {
         final MyResponseListener listener = new MyResponseListener();
         new HttpClient().request(value, listener);
         if (listener.getThrowable() != null) {
-            return listener.getThrowable().getMessage();
-        } else if (listener.getResult().getError() != null) {
-            return String.valueOf(listener.getResult().getError());
+            return new Version();
         } else {
-            return String.valueOf(listener.getResult().getResult());
+            return listener.getVersion();
         }
     }
 
     private static class MyResponseListener implements HttpClient.ResponseListener {
 
-        private Result result;
+        private Version mVersion;
         private Throwable mThrowable;
 
         @Override
@@ -32,9 +30,9 @@ public class BackendCalculator {
             InputStreamReader inputStreamReader = null;
             try {
                 inputStreamReader = new InputStreamReader(pInputStream);
-                result = new GsonBuilder()
+                mVersion = new GsonBuilder()
                         .setLenient()
-                        .create().fromJson(inputStreamReader, Result.class);
+                        .create().fromJson(inputStreamReader, Version.class);
             } finally {
                 if (inputStreamReader != null) {
                     try {
@@ -54,9 +52,10 @@ public class BackendCalculator {
             mThrowable = pThrowable;
         }
 
-        public Result getResult() {
-            return result;
+        public Version getVersion() {
+            return mVersion;
         }
 
     }
+
 }
