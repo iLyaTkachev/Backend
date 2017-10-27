@@ -1,8 +1,12 @@
 package ilyatkachev.github.com.backend;
 
+import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.provider.SyncStateContract;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
@@ -23,12 +27,35 @@ public class CalculatorActivity extends AppCompatActivity {
     private View mCalculateButton;
     private BackendCalculator mBackendCalculator;
     private BackendVersion mBackendVersion;
+    private boolean isVersionChecked;
 
     @Override
     protected void onCreate(@Nullable Bundle pSavedInstanceState) {
         super.onCreate(pSavedInstanceState);
         setContentView(R.layout.activity_calculator);
+        isVersionChecked = false;
         initView();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!isVersionChecked) {
+            checkVersion();
+            isVersionChecked = true;
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean("checkState", isVersionChecked);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        isVersionChecked = savedInstanceState.getBoolean("checkState");
     }
 
     private void initView() {
@@ -66,10 +93,9 @@ public class CalculatorActivity extends AppCompatActivity {
             }
         });
 
-        //checkVersion();
-
     }
 
+    //returns result of calculations
     private void showResult(String result) {
         mResultTextView.setText(result);
     }
@@ -82,15 +108,44 @@ public class CalculatorActivity extends AppCompatActivity {
                 final String url = Constants.VERSION_URL;
                 final Version ver = mBackendVersion.getLastVersion(url);
                 final int currentVersion = BuildConfig.VERSION_CODE;
-
                 runOnUiThread(new Runnable() {
 
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(), String.valueOf(ver.getVersionCode()) +"-"+String.valueOf(currentVersion), Toast.LENGTH_SHORT).show();
+                        if (ver.getVersionCode() > currentVersion) {
+                            if (ver.isHardUpdate()) {
+                                showUpdateDialog(String.valueOf(ver.getVersionCode()), false);
+                            } else {
+                                showUpdateDialog(String.valueOf(ver.getVersionCode()), true);
+                            }
+                        }
                     }
                 });
             }
         }).start();
+    }
+
+    private void showUpdateDialog(String version, boolean isCancelable) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Update notification");
+        alertDialog.setMessage("New version of application is available: v" + version + ". Please update your current version!");
+        alertDialog.setCancelable(isCancelable);
+        alertDialog.setPositiveButton("Update Now", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface pDialogInterface, int pI) {
+                Toast.makeText(CalculatorActivity.this, "Update Now", Toast.LENGTH_SHORT).show();
+            }
+        });
+        if (isCancelable) {
+            alertDialog.setNegativeButton("Later", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface pDialogInterface, int pI) {
+                    Toast.makeText(CalculatorActivity.this, "Update Later", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        alertDialog.show();
     }
 }
