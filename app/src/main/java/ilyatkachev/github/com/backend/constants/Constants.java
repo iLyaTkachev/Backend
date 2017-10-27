@@ -1,6 +1,8 @@
 package ilyatkachev.github.com.backend.constants;
 
+import ilyatkachev.github.com.backend.BuildConfig;
+
 public class Constants {
-    public static final String VERSION_URL = "https://androidbackendepam-183311.appspot.com/ver";
-    public static final String CALCULATOR_URL = "https://androidbackendepam-183311.appspot.com/calc?input=";
+    public static final String VERSION_URL = BuildConfig.VERSION_URL;
+    public static final String CALCULATOR_URL = BuildConfig.CALCULATOR_URL;
 }

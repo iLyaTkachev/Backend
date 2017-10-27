@@ -12,7 +12,14 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            buildConfigField "String", "CALCULATOR_URL", "\"https://androidbackendepam-183311.appspot.com/calc?input=\""
+            buildConfigField "String", "VERSION_URL", "\"https://androidbackendepam-183311.appspot.com/ver\""
+        }
         release {
+            //there should be another urls :)
+            buildConfigField "String", "CALCULATOR_URL", "\"https://androidbackendepam-183311.appspot.com/calc?input=\""
+            buildConfigField "String", "VERSION_URL", "\"https://androidbackendepam-183311.appspot.com/ver\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
