@@ -24,6 +24,26 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "store"
+
+    productFlavors {
+
+        GooglePlay {
+            applicationId "ilyatkachev.xxx.googleplay"
+            versionName "1.0"
+            flavorDimension "store"
+            buildConfigField "String", "SHARE_URL", "\"http://mybestcalcforgooglestore.com\""
+        }
+
+        Amazon {
+            applicationId "ilyatkachev.xxx.amazon"
+            versionName "1.0"
+            flavorDimension "store"
+            buildConfigField "String", "SHARE_URL", "\"http://mybestcalcforamazon.com\""
+        }
+
+    }
 }
 
 dependencies {
