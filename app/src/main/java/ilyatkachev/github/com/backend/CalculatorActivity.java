@@ -1,6 +1,7 @@
 package ilyatkachev.github.com.backend;
 
 import android.os.Bundle;
+import android.provider.SyncStateContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -13,6 +14,8 @@ import com.example.Version;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+import ilyatkachev.github.com.backend.constants.Constants;
+
 public class CalculatorActivity extends AppCompatActivity {
 
     private TextView mResultTextView;
@@ -20,8 +23,6 @@ public class CalculatorActivity extends AppCompatActivity {
     private View mCalculateButton;
     private BackendCalculator mBackendCalculator;
     private BackendVersion mBackendVersion;
-
-    private View mVersionButton;
 
     @Override
     protected void onCreate(@Nullable Bundle pSavedInstanceState) {
@@ -47,7 +48,7 @@ public class CalculatorActivity extends AppCompatActivity {
                     public void run() {
                         final String url;
                         try {
-                            url = "https://androidbackendepam-183311.appspot.com/calc?input=" + URLEncoder.encode(mInputEditText.getText().toString(), "UTF-8");
+                            url = Constants.CALCULATOR_URL + URLEncoder.encode(mInputEditText.getText().toString(), "UTF-8");
                         } catch (final UnsupportedEncodingException pE) {
                             throw new IllegalStateException(pE);
                         }
@@ -65,7 +66,7 @@ public class CalculatorActivity extends AppCompatActivity {
             }
         });
 
-        checkVersion();
+        //checkVersion();
 
     }
 
@@ -78,14 +79,15 @@ public class CalculatorActivity extends AppCompatActivity {
 
             @Override
             public void run() {
-                final String url = "https://androidbackendepam-183311.appspot.com/ver";
+                final String url = Constants.VERSION_URL;
                 final Version ver = mBackendVersion.getLastVersion(url);
+                final int currentVersion = BuildConfig.VERSION_CODE;
 
                 runOnUiThread(new Runnable() {
 
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(), String.valueOf(ver.getVersionCode()), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), String.valueOf(ver.getVersionCode()) +"-"+String.valueOf(currentVersion), Toast.LENGTH_SHORT).show();
                     }
                 });
             }

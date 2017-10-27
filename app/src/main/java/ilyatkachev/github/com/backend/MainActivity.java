@@ -5,8 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.Version;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+
+import ilyatkachev.github.com.backend.constants.Constants;
 
 public class MainActivity extends AppCompatActivity {
 
